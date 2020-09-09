@@ -63,7 +63,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     func addSpinner() {
         spinner = UIActivityIndicatorView()
-        spinner?.center = CGPoint(x: screenSize.width, y: screenSize.height)
+        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: 150)
         spinner?.style = .large
         spinner?.color = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
         spinner?.startAnimating()
