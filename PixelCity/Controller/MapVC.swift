@@ -29,6 +29,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     
     var imageUrls:[String] = [String]()
+    var imageArray:[UIImage] = [UIImage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +70,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func animateViewDown() {
+        cancelAllSessions()
         heightConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -93,7 +95,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     func addProgressLabel() {
         self.progressLabel = UILabel()
         progressLabel?.frame = CGRect(x: (screenSize.width / 2) - 130, y: 175, width: 260, height: 40)
-        progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
+        progressLabel?.font = UIFont(name: "Avenir Next", size: 15)
         progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         progressLabel?.textAlignment = .center
         progressLabel?.text = "Progress label"
@@ -137,6 +139,7 @@ extension MapVC: MKMapViewDelegate {
         removePin()
         removeSpinner()
         removeProgressLabel()
+        cancelAllSessions()
         
         animateViewUp()
         addSwipe()
@@ -152,7 +155,14 @@ extension MapVC: MKMapViewDelegate {
         mapView.setRegion(coordinateRegion, animated: true)
         
         retrieveURLs(forAnnotation: annotation) { (success) in
-            print(self.imageUrls)
+            if success {
+                self.downloadImages { (success) in
+                    if success {
+                        self.removeSpinner()
+                        self.removeProgressLabel()
+                    }
+                }
+            }
         }
     }
     
@@ -162,9 +172,7 @@ extension MapVC: MKMapViewDelegate {
         }
     }
     
-//    guard let data = response.data else { return }
-//    if let json = JSON(data).array {
-    func retrieveURLs(forAnnotation annotation: DropablePin, handler: @escaping (_ status: Bool) -> ()) {
+    func retrieveURLs(forAnnotation annotation: DropablePin, completion: @escaping (_ status: Bool) -> ()) {
         imageUrls = []
         AF.request(flickrURL(API_KEY, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
             guard let json = response.value as? Dictionary<String, AnyObject> else { return }
@@ -175,7 +183,33 @@ extension MapVC: MKMapViewDelegate {
                 let postURL = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!).jpg"
                 self.imageUrls.append(postURL)
             }
-            handler(true)
+            completion(true)
+        }
+    }
+    
+    func downloadImages(completion: @escaping (_ status: Bool) -> ()) {
+        imageArray = []
+        for url in imageUrls {
+            AF.request(url).responseImage { (response) in
+                guard let image = response.value else { return }
+                self.imageArray.append(image)
+                self.progressLabel?.text = "\(self.imageArray.count)/40 IMAGES DOWNLOADED"
+                
+                if self.imageArray.count == self.imageUrls.count {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
+    func cancelAllSessions() {
+        Alamofire.Session.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+            sessionDataTask.forEach { (task) in
+                task.cancel()
+            }
+            downloadData.forEach { (task) in
+                task.cancel()
+            }
         }
     }
 }
@@ -209,6 +243,4 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell
         return cell!
     }
-    
-    
 }
