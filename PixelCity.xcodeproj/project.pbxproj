@@ -16,6 +16,7 @@
 		303595472507BDC900D85DEB /* DropablePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303595462507BDC900D85DEB /* DropablePin.swift */; };
 		303595492508C2A600D85DEB /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303595482508C2A600D85DEB /* PhotoCell.swift */; };
 		3035954B2508C67800D85DEB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035954A2508C67800D85DEB /* Constants.swift */; };
+		3035954D2508DEFB00D85DEB /* PopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035954C2508DEFB00D85DEB /* PopVC.swift */; };
 		6FF75A016D4A2A04D1A091AE /* Pods_PixelCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34ADE59B65126E4F4F5DE47B /* Pods_PixelCity.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		303595462507BDC900D85DEB /* DropablePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropablePin.swift; sourceTree = "<group>"; };
 		303595482508C2A600D85DEB /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		3035954A2508C67800D85DEB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3035954C2508DEFB00D85DEB /* PopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopVC.swift; sourceTree = "<group>"; };
 		34ADE59B65126E4F4F5DE47B /* Pods_PixelCity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PixelCity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		507CAB505FD8D2A78D50611E /* Pods-PixelCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PixelCity.debug.xcconfig"; path = "Target Support Files/Pods-PixelCity/Pods-PixelCity.debug.xcconfig"; sourceTree = "<group>"; };
 		9BA07E2E0D547BB6BEE1EC5B /* Pods-PixelCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PixelCity.release.xcconfig"; path = "Target Support Files/Pods-PixelCity/Pods-PixelCity.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			children = (
 				303595322507A0D800D85DEB /* MapVC.swift */,
 				303595482508C2A600D85DEB /* PhotoCell.swift */,
+				3035954C2508DEFB00D85DEB /* PopVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 			files = (
 				303595472507BDC900D85DEB /* DropablePin.swift in Sources */,
 				303595492508C2A600D85DEB /* PhotoCell.swift in Sources */,
+				3035954D2508DEFB00D85DEB /* PopVC.swift in Sources */,
 				303595332507A0D800D85DEB /* MapVC.swift in Sources */,
 				3035952F2507A0D800D85DEB /* AppDelegate.swift in Sources */,
 				303595312507A0D800D85DEB /* SceneDelegate.swift in Sources */,

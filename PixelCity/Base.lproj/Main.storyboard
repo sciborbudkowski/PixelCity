@@ -81,8 +81,47 @@
             </objects>
             <point key="canvasLocation" x="131.8840579710145" y="136.95652173913044"/>
         </scene>
+        <!--PopVC-->
+        <scene sceneID="urW-Em-CNJ">
+            <objects>
+                <viewController storyboardIdentifier="PopVC" id="27m-T3-o0o" customClass="PopVC" customModule="PixelCity" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4We-l8-of6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FtH-3H-Odo">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ibb-bG-L5u">
+                                <rect key="frame" x="364" y="20" width="30" height="30"/>
+                                <state key="normal" image="closeButton"/>
+                                <connections>
+                                    <action selector="closePressed:" destination="27m-T3-o0o" eventType="touchUpInside" id="qv9-L8-baD"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="FtH-3H-Odo" secondAttribute="trailing" id="5S0-T6-IFM"/>
+                            <constraint firstItem="FtH-3H-Odo" firstAttribute="leading" secondItem="4We-l8-of6" secondAttribute="leading" id="N95-xN-VUN"/>
+                            <constraint firstItem="nOm-Ye-Cqm" firstAttribute="trailing" secondItem="Ibb-bG-L5u" secondAttribute="trailing" constant="20" id="PCl-KM-ReI"/>
+                            <constraint firstItem="FtH-3H-Odo" firstAttribute="top" secondItem="4We-l8-of6" secondAttribute="top" id="YPc-xh-GFi"/>
+                            <constraint firstAttribute="bottom" secondItem="FtH-3H-Odo" secondAttribute="bottom" id="hgb-Lv-sZN"/>
+                            <constraint firstItem="Ibb-bG-L5u" firstAttribute="top" secondItem="nOm-Ye-Cqm" secondAttribute="top" constant="20" id="mt0-t8-hXt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="nOm-Ye-Cqm"/>
+                    </view>
+                    <connections>
+                        <outlet property="popImageView" destination="FtH-3H-Odo" id="9vL-c5-1Gs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lRY-AJ-nXR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="886.95652173913049" y="139.4021739130435"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="closeButton" width="30" height="30"/>
         <image name="locationButton" width="67" height="67"/>
     </resources>
 </document>
