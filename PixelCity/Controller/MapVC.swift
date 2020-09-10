@@ -11,6 +11,7 @@ import MapKit
 import CoreLocation
 import Alamofire
 import AlamofireImage
+import SwiftyJSON
 
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
@@ -28,8 +29,9 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var collectionView: UICollectionView?
     var flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     
-    var imageUrls:[String] = [String]()
-    var imageArray:[UIImage] = [UIImage]()
+    var imageUrls:[String: String] = [String: String]()
+    //var imageArray:[UIImage] = [UIImage]()
+    var photoArray:[PhotoCollection] = [PhotoCollection()]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
         configureLocationServices()
         addDoubleTap()
+        //addPinch()
         
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
         collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
@@ -47,13 +50,11 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         collectionView?.backgroundColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 0.25)
         
         pullUpView.addSubview(collectionView!)
-        
-        registerForPreviewing(with: self, sourceView: collectionView!)
     }
     
     func addDoubleTap() {
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(dropPin(_ :)))
-        doubleTap.numberOfTapsRequired = 2
+        doubleTap.numberOfTapsRequired = 1
         doubleTap.delegate = self
         mapView.addGestureRecognizer(doubleTap)
     }
@@ -115,6 +116,13 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
             centerMapOnUserLocation()
         }
     }
+    
+    @IBAction func settingsPressed(_ sender: Any) {
+        let settingsVC = SettingsVC()
+        settingsVC.modalPresentationStyle = .custom
+        present(settingsVC, animated: true, completion: nil)
+        
+    }
 }
 
 extension MapVC: MKMapViewDelegate {
@@ -171,8 +179,8 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func removeImagesFromView() {
-        imageUrls = []
-        imageArray = []
+        imageUrls = [:]
+        photoArray = []
         collectionView?.reloadData()
     }
     
@@ -183,29 +191,41 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func retrieveURLs(forAnnotation annotation: DropablePin, completion: @escaping (_ status: Bool) -> ()) {
-        AF.request(flickrURL(API_KEY, withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
+        AF.request(flickrGetPhotosForLocation(withAnnotation: annotation, andNumberOfPhotos: 40)).responseJSON { (response) in
             guard let json = response.value as? Dictionary<String, AnyObject> else { return }
-            print(response)
             let photosDict = json["photos"] as! Dictionary<String, AnyObject>
             let photosDictArray = photosDict["photo"] as! [Dictionary<String, AnyObject>]
             for photo in photosDictArray {
                 // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-                let postURL = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!).jpg"
-                self.imageUrls.append(postURL)
+                let postURL: String = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!).jpg"
+                self.imageUrls["\(String(describing: photo["id"]))"] = postURL
             }
             completion(true)
         }
     }
     
     func downloadImages(completion: @escaping (_ status: Bool) -> ()) {
-        for url in imageUrls {
-            AF.request(url).responseImage { (response) in
+        for(key, value) in imageUrls {
+            AF.request(value).responseImage { (response) in
                 guard let image = response.value else { return }
-                self.imageArray.append(image)
-                self.progressLabel?.text = "\(self.imageArray.count)/40 IMAGES DOWNLOADED"
-                
-                if self.imageArray.count == self.imageUrls.count {
-                    completion(true)
+                let keyForPhoto = key.replacingOccurrences(of: "Optional(", with: "").replacingOccurrences(of: ")", with: "")
+                AF.request(flickrGetPhotoDetails(forId: keyForPhoto)).responseJSON { (response) in
+                    if response.error == nil {
+                        guard let data = response.data else { return }
+                        let json = JSON(data)
+                        var username: String = json["photo"]["owner"]["username"].stringValue
+                        if json["photo"]["owner"]["realname"].stringValue != "" {
+                            username = "\(json["photo"]["owner"]["realname"].stringValue) (\(username))"
+                        }
+                        let photo = PhotoCollection(image: image, id: json["photo"]["id"].stringValue, username: username, date: json["photo"]["dates"]["taken"].stringValue, title: json["photo"]["title"]["_content"].stringValue, description: json["photo"]["description"]["_content"].stringValue, url: value, webpage: json["photo"]["urls"]["url"][0]["_content"].stringValue, hasDetails: true)
+                        
+                        self.photoArray.append(photo)
+                    }
+                    
+                    self.progressLabel?.text = "\(self.photoArray.count)/40 IMAGES DOWNLOADED"
+                    if self.photoArray.count == self.imageUrls.count {
+                        completion(true)
+                    }
                 }
             }
         }
@@ -245,13 +265,15 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+        return photoArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
-        let imageFromIndex = imageArray[indexPath.row]
+        let imageFromIndex = photoArray[indexPath.row].image
         let imageView = UIImageView(image: imageFromIndex)
+        imageView.contentMode = .scaleAspectFit
+        
         cell.addSubview(imageView)
         
         return cell
@@ -259,21 +281,15 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let popVC = storyboard?.instantiateViewController(identifier: TO_POP_VC) as? PopVC else { return }
-        popVC.initData(forImage: imageArray[indexPath.row])
+        popVC.initData(forPhoto: photoArray[indexPath.row])
         present(popVC, animated: true, completion: nil)
     }
 }
 
-extension MapVC: UIViewControllerPreviewingDelegate {
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = collectionView?.indexPathForItem(at: location), let cell = collectionView?.cellForItem(at: indexPath) else { return nil }
-        guard let popVC = storyboard?.instantiateViewController(identifier: TO_POP_VC) as? PopVC else { return nil }
-        popVC.initData(forImage: imageArray[indexPath.row])
-        previewingContext.sourceRect = cell.contentView.frame
-        return popVC
-    }
-    
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        show(viewControllerToCommit, sender: self)
-    }
-}
+//extension MapVC: UICollectionViewDelegateFlowLayout {
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let size = UIScreen.main.bounds.width / 5
+//        return(CGSize(width: size, height: size))
+//    }
+//}

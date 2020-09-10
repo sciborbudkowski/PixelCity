@@ -10,10 +10,14 @@ import UIKit
 
 struct PhotoCollection {
     
-    var Photo: UIImage
-    var Username: String
-    var Date: String
-    var Title: String
-    var Description: String
+    var image: UIImage?
+    var id: String?
+    var username: String?
+    var date: String?
+    var title: String?
+    var description: String?
+    var url: String?
+    var webpage: String?
+    var hasDetails: Bool = false
     
 }
