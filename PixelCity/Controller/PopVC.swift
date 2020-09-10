@@ -27,4 +27,10 @@ class PopVC: UIViewController {
     @IBAction func closePressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func detailsPressed(_ sender: Any) {
+    }
+    
+    @IBAction func imageViewModePressed(_ sender: Any) {
+    }
 }

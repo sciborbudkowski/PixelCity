@@ -92,22 +92,56 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FtH-3H-Odo">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ibb-bG-L5u">
-                                <rect key="frame" x="364" y="20" width="30" height="30"/>
-                                <state key="normal" image="closeButton"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QhS-BM-Ea0" customClass="CircleButton" customModule="PixelCity" customModuleProvider="target">
+                                <rect key="frame" x="354" y="676" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Qo0-1G-zPv"/>
+                                    <constraint firstAttribute="width" constant="40" id="ZCY-Vi-eTO"/>
+                                </constraints>
+                                <state key="normal" image="details"/>
                                 <connections>
-                                    <action selector="closePressed:" destination="27m-T3-o0o" eventType="touchUpInside" id="qv9-L8-baD"/>
+                                    <action selector="detailsPressed:" destination="27m-T3-o0o" eventType="touchUpInside" id="HcP-CA-79d"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rBW-A8-KJN" customClass="CircleButton" customModule="PixelCity" customModuleProvider="target">
+                                <rect key="frame" x="20" y="676" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="VOs-K9-kON"/>
+                                    <constraint firstAttribute="height" constant="40" id="kwN-o9-Ed7"/>
+                                </constraints>
+                                <state key="normal" image="viewMode"/>
+                                <connections>
+                                    <action selector="imageViewModePressed:" destination="27m-T3-o0o" eventType="touchUpInside" id="xd9-ic-fEF"/>
+                                </connections>
+                            </button>
+                            <view hidden="YES" alpha="0.55000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0T-lZ-E9u">
+                                <rect key="frame" x="20" y="20" width="374" height="636"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Photo Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qz-pX-lKq">
+                                        <rect key="frame" x="8" y="8" width="358" height="52"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="21"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="o0T-lZ-E9u" firstAttribute="leading" secondItem="nOm-Ye-Cqm" secondAttribute="leading" constant="20" id="2KK-us-pCS"/>
                             <constraint firstAttribute="trailing" secondItem="FtH-3H-Odo" secondAttribute="trailing" id="5S0-T6-IFM"/>
+                            <constraint firstAttribute="bottom" secondItem="rBW-A8-KJN" secondAttribute="bottom" constant="20" id="8xu-P5-y3y"/>
+                            <constraint firstItem="o0T-lZ-E9u" firstAttribute="top" secondItem="nOm-Ye-Cqm" secondAttribute="top" constant="20" id="KwE-bt-dR3"/>
                             <constraint firstItem="FtH-3H-Odo" firstAttribute="leading" secondItem="4We-l8-of6" secondAttribute="leading" id="N95-xN-VUN"/>
-                            <constraint firstItem="nOm-Ye-Cqm" firstAttribute="trailing" secondItem="Ibb-bG-L5u" secondAttribute="trailing" constant="20" id="PCl-KM-ReI"/>
+                            <constraint firstAttribute="trailing" secondItem="QhS-BM-Ea0" secondAttribute="trailing" constant="20" id="QsM-0Y-Ygc"/>
+                            <constraint firstAttribute="bottom" secondItem="QhS-BM-Ea0" secondAttribute="bottom" constant="20" id="SOu-Uh-Mxu"/>
+                            <constraint firstItem="QhS-BM-Ea0" firstAttribute="top" secondItem="o0T-lZ-E9u" secondAttribute="bottom" constant="20" id="X8s-SK-5jV"/>
                             <constraint firstItem="FtH-3H-Odo" firstAttribute="top" secondItem="4We-l8-of6" secondAttribute="top" id="YPc-xh-GFi"/>
                             <constraint firstAttribute="bottom" secondItem="FtH-3H-Odo" secondAttribute="bottom" id="hgb-Lv-sZN"/>
-                            <constraint firstItem="Ibb-bG-L5u" firstAttribute="top" secondItem="nOm-Ye-Cqm" secondAttribute="top" constant="20" id="mt0-t8-hXt"/>
+                            <constraint firstItem="nOm-Ye-Cqm" firstAttribute="trailing" secondItem="o0T-lZ-E9u" secondAttribute="trailing" constant="20" id="ujN-s1-0eX"/>
+                            <constraint firstItem="rBW-A8-KJN" firstAttribute="leading" secondItem="4We-l8-of6" secondAttribute="leading" constant="20" id="z9I-BZ-R2D"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nOm-Ye-Cqm"/>
                     </view>
@@ -121,7 +155,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="closeButton" width="30" height="30"/>
+        <image name="details" width="98" height="96"/>
         <image name="locationButton" width="67" height="67"/>
+        <image name="viewMode" width="98" height="96"/>
     </resources>
 </document>
