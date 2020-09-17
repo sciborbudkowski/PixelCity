@@ -2,24 +2,32 @@ PODS:
   - Alamofire (5.2.2)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
+  - ContainerControllerSwift (1.1.0)
+  - SwiftyContextMenu (0.1.4)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 5.2)
-  - AlamofireImage (~> 4.1)
-  - SwiftyJSON (~> 4.0)
+  - Alamofire
+  - AlamofireImage
+  - ContainerControllerSwift
+  - SwiftyContextMenu
+  - SwiftyJSON
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
+    - ContainerControllerSwift
+    - SwiftyContextMenu
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
+  ContainerControllerSwift: 5deb1c299829dcbe2fc2f61a8410a1257c2bbea1
+  SwiftyContextMenu: 5ad693b7b74fe78128db4143badc93a602ecdc2a
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 50fdeb88d973e37e7228d31fb8582eb7be228d1f
+PODFILE CHECKSUM: 9b57bb4f51e3846d16982170e0b73cead657258f
 
 COCOAPODS: 1.9.3

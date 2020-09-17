@@ -1,4 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-PixelCity/Pods-PixelCity-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework
+${BUILT_PRODUCTS_DIR}/ContainerControllerSwift/ContainerControllerSwift.framework
+${BUILT_PRODUCTS_DIR}/SwiftyContextMenu/SwiftyContextMenu.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework

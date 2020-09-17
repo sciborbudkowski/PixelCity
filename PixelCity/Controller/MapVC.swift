@@ -12,8 +12,9 @@ import CoreLocation
 import Alamofire
 import AlamofireImage
 import SwiftyJSON
+import ContainerControllerSwift
 
-class MapVC: UIViewController, UIGestureRecognizerDelegate {
+class MapVC: UIViewController, UIGestureRecognizerDelegate, ContainerControllerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
@@ -30,8 +31,9 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     
     var imageUrls:[String: String] = [String: String]()
-    //var imageArray:[UIImage] = [UIImage]()
     var photoArray:[PhotoCollection] = [PhotoCollection()]
+    
+    var container: ContainerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,29 +42,47 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         locationManager.delegate = self
         
         configureLocationServices()
-        addDoubleTap()
-        //addPinch()
+        addSingleTap()
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
-        collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
+        setupContainerController()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        container.remove()
+        container = nil
+    }
+    
+    func setupContainerController() {
+        let layout = ContainerLayout()
+        layout.startPosition = .hide
+        layout.backgroundShadowShow = true
+        layout.positions = ContainerPosition(top: 70, middle: 250, bottom: 70)
+        
+        container = ContainerController(addTo: self, layout: layout)
+        container.view.cornerRadius = 15
+        container.view.addShadow()
+        
+        self.collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
+        collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "cell")
         collectionView?.delegate = self
         collectionView?.dataSource = self
         collectionView?.backgroundColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 0.25)
+        collectionView?.contentMode = .scaleToFill
         
-        pullUpView.addSubview(collectionView!)
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 10))
+        headerView.backgroundColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 0.25)
+        container.add(headerView: headerView)
+        
+        container.add(scrollView: collectionView!)
     }
     
-    func addDoubleTap() {
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(dropPin(_ :)))
-        doubleTap.numberOfTapsRequired = 1
-        doubleTap.delegate = self
-        mapView.addGestureRecognizer(doubleTap)
-    }
-    
-    func addSwipe() {
-        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(animateViewDown))
-        swipe.direction = .down
-        pullUpView.addGestureRecognizer(swipe)
+    func addSingleTap() {
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(dropPin(_ :)))
+        singleTap.numberOfTapsRequired = 1
+        singleTap.delegate = self
+        mapView.addGestureRecognizer(singleTap)
     }
     
     func animateViewUp() {
@@ -86,7 +106,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         spinner?.style = .large
         spinner?.color = #colorLiteral(red: 0.3333333433, green: 0.3333333433, blue: 0.3333333433, alpha: 1)
         spinner?.startAnimating()
-        collectionView?.addSubview(spinner!)
+        container?.view.addSubview(spinner!)
     }
     
     func removeSpinner() {
@@ -102,7 +122,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         progressLabel?.textAlignment = .center
         progressLabel?.text = ""
-        collectionView?.addSubview(progressLabel!)
+        container.view.addSubview(progressLabel!)
     }
     
     func removeProgressLabel() {
@@ -152,8 +172,7 @@ extension MapVC: MKMapViewDelegate {
         cancelAllSessions()
         removeImagesFromView()
                 
-        animateViewUp()
-        addSwipe()
+        container.move(type: .middle)
         addSpinner()
         addProgressLabel()
         
@@ -196,7 +215,6 @@ extension MapVC: MKMapViewDelegate {
             let photosDict = json["photos"] as! Dictionary<String, AnyObject>
             let photosDictArray = photosDict["photo"] as! [Dictionary<String, AnyObject>]
             for photo in photosDictArray {
-                // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
                 let postURL: String = "https://farm\(photo["farm"]!).staticflickr.com/\(photo["server"]!)/\(photo["id"]!)_\(photo["secret"]!).jpg"
                 self.imageUrls["\(String(describing: photo["id"]))"] = postURL
             }
@@ -269,10 +287,11 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
         let imageFromIndex = photoArray[indexPath.row].image
         let imageView = UIImageView(image: imageFromIndex)
-        imageView.contentMode = .scaleAspectFit
+        imageView.frame.size = CGSize(width: 50, height: 50)
+        imageView.contentMode = .scaleToFill
         
         cell.addSubview(imageView)
         
@@ -286,10 +305,17 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 
-//extension MapVC: UICollectionViewDelegateFlowLayout {
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let size = UIScreen.main.bounds.width / 5
-//        return(CGSize(width: size, height: size))
-//    }
-//}
+extension MapVC: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 50, height: 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0.0
+    }
+}

@@ -6,7 +6,9 @@ target 'PixelCity' do
   use_frameworks!
 
   # Pods for PixelCity
-  pod 'Alamofire', '~> 5.2'
-  pod 'AlamofireImage', '~> 4.1'
-  pod 'SwiftyJSON', '~> 4.0'
+  pod 'Alamofire'
+  pod 'AlamofireImage'
+  pod 'SwiftyJSON'
+  pod 'ContainerControllerSwift'
+  pod 'SwiftyContextMenu'
 end

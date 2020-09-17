@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3015163325124959008534FB /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3015163225124959008534FB /* CustomSegmentedControl.swift */; };
 		3035952F2507A0D800D85DEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3035952E2507A0D800D85DEB /* AppDelegate.swift */; };
 		303595312507A0D800D85DEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303595302507A0D800D85DEB /* SceneDelegate.swift */; };
 		303595332507A0D800D85DEB /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303595322507A0D800D85DEB /* MapVC.swift */; };
@@ -23,10 +24,12 @@
 		30879D73250A5DFB007E0BE3 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30879D71250A5DFB007E0BE3 /* SettingsVC.swift */; };
 		30879D74250A5DFB007E0BE3 /* SettingsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30879D72250A5DFB007E0BE3 /* SettingsVC.xib */; };
 		30879D76250A6543007E0BE3 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30879D75250A6543007E0BE3 /* RoundButton.swift */; };
+		30879D98250B6569007E0BE3 /* RoundCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30879D97250B6569007E0BE3 /* RoundCollectionView.swift */; };
 		6FF75A016D4A2A04D1A091AE /* Pods_PixelCity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34ADE59B65126E4F4F5DE47B /* Pods_PixelCity.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3015163225124959008534FB /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		3035952B2507A0D800D85DEB /* PixelCity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PixelCity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3035952E2507A0D800D85DEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		303595302507A0D800D85DEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +48,7 @@
 		30879D71250A5DFB007E0BE3 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		30879D72250A5DFB007E0BE3 /* SettingsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsVC.xib; sourceTree = "<group>"; };
 		30879D75250A6543007E0BE3 /* RoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		30879D97250B6569007E0BE3 /* RoundCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundCollectionView.swift; sourceTree = "<group>"; };
 		34ADE59B65126E4F4F5DE47B /* Pods_PixelCity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PixelCity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		507CAB505FD8D2A78D50611E /* Pods-PixelCity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PixelCity.debug.xcconfig"; path = "Target Support Files/Pods-PixelCity/Pods-PixelCity.debug.xcconfig"; sourceTree = "<group>"; };
 		9BA07E2E0D547BB6BEE1EC5B /* Pods-PixelCity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PixelCity.release.xcconfig"; path = "Target Support Files/Pods-PixelCity/Pods-PixelCity.release.xcconfig"; sourceTree = "<group>"; };
@@ -112,10 +116,12 @@
 		303595432507A10F00D85DEB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3015163225124959008534FB /* CustomSegmentedControl.swift */,
 				303595462507BDC900D85DEB /* DropablePin.swift */,
 				30879D682509E6B0007E0BE3 /* CircleButton.swift */,
 				30879D6D250A431E007E0BE3 /* RoundView.swift */,
 				30879D75250A6543007E0BE3 /* RoundButton.swift */,
+				30879D97250B6569007E0BE3 /* RoundCollectionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -272,9 +278,11 @@
 				30879D76250A6543007E0BE3 /* RoundButton.swift in Sources */,
 				30879D73250A5DFB007E0BE3 /* SettingsVC.swift in Sources */,
 				303595472507BDC900D85DEB /* DropablePin.swift in Sources */,
+				30879D98250B6569007E0BE3 /* RoundCollectionView.swift in Sources */,
 				30879D6C2509EE76007E0BE3 /* PhotoCollection.swift in Sources */,
 				303595492508C2A600D85DEB /* PhotoCell.swift in Sources */,
 				3035954D2508DEFB00D85DEB /* PopVC.swift in Sources */,
+				3015163325124959008534FB /* CustomSegmentedControl.swift in Sources */,
 				30879D692509E6B0007E0BE3 /* CircleButton.swift in Sources */,
 				303595332507A0D800D85DEB /* MapVC.swift in Sources */,
 				3035952F2507A0D800D85DEB /* AppDelegate.swift in Sources */,
